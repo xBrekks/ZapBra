@@ -21,7 +21,7 @@ Al arrancar, la consola dice dónde se están guardando los datos: **Supabase** 
 npm test
 ```
 
-Revisa en unos segundos la tienda, el panel, los pedidos y los cálculos del tablero. Las pruebas arrancan su propio servidor en una carpeta temporal y **nunca tocan Supabase ni la carpeta `data/`**. Conviene correrlas después de cada cambio.
+Revisa en unos segundos la tienda, el panel, los pedidos, los cálculos del tablero y la verificación anti-bots. Las pruebas arrancan su propio servidor en una carpeta temporal y **nunca tocan Supabase ni la carpeta `data/`** (tampoco necesitan internet). Conviene correrlas después de cada cambio.
 
 ## Panel de administración
 
@@ -34,6 +34,24 @@ Revisa en unos segundos la tienda, el panel, los pedidos y los cálculos del tab
 
 - El tablero solo cuenta pedidos de la tienda en línea, y como ventas solo los **confirmados y entregados**.
 - El **costo por pieza** de cada producto es opcional y solo lo ve el panel: la tienda nunca lo recibe. Con él, el tablero calcula la ganancia y la inversión en mercancía. Cada pedido guarda el costo del momento, así la ganancia de ventas pasadas no cambia si después cambias el costo.
+
+## Verificación anti-bots al entrar al panel (opcional)
+
+El acceso al panel puede pedir, además de la contraseña, la verificación gratuita de Cloudflare (**Turnstile**). Casi siempre se resuelve sola en uno o dos segundos; a veces pide marcar una casilla. Frena a los programas que prueban contraseñas desde muchas IP distintas, algo que el bloqueo por intentos fallidos (5 intentos por IP) no alcanza a detener.
+
+Sin las claves, el panel pide solo la contraseña.
+
+**Activarla** (cuando tengas el dominio donde vas a publicar):
+
+1. Crea una cuenta gratis en [Cloudflare](https://dash.cloudflare.com). No hace falta mover tu dominio a Cloudflare.
+2. En el menú busca **Turnstile** y crea un widget (**Add widget**). Ponle un nombre, agrega tu dominio en **Hostnames** (por ejemplo `zapateriabrazil.mx`) y deja el modo **Managed**.
+3. Copia la **Site Key** y la **Secret Key** a las variables `TURNSTILE_SITE_KEY` y `TURNSTILE_SECRET_KEY` del hosting, y reinicia el servidor. Al arrancar, la consola dice si la verificación está activa.
+
+**Probarla en tu computadora:** Cloudflare publica claves de prueba que siempre pasan. Copia a tu `.env` las dos líneas de Turnstile que vienen en `.env.example` (sin el `#`) y reinicia. El recuadro aparece con la leyenda "Solo para pruebas". Esas claves no protegen nada: no las uses en el sitio publicado.
+
+**Si algún día no puedes entrar** porque Cloudflare falla, quita las dos variables y reinicia: el panel vuelve a pedir solo la contraseña.
+
+El recuadro protege el acceso al panel. No impide que los bots vean la tienda, y está bien así: Google y WhatsApp necesitan leerla para mostrar tus productos.
 
 ## Dónde se guardan los datos
 
@@ -98,6 +116,7 @@ Configuración en el hosting:
 | `SUPABASE_SECRET_KEY` | Clave secreta de Supabase (como variable secreta del hosting, nunca en el código) |
 | `TRUST_PROXY` | `1` si el hosting pone HTTPS delante del servidor (casi siempre). Así la sesión del panel solo viaja cifrada y el bloqueo por intentos fallidos usa la IP real |
 | `SITIO_URL` | La dirección pública, por ejemplo `https://zapateriabrazil.mx`. Se usa en los enlaces que aparecen al compartir productos y en `sitemap.xml` |
+| `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Opcional: las claves de tu widget de Cloudflare Turnstile (ver "Verificación anti-bots"). La secreta, como variable secreta |
 | `PORT` | Normalmente lo define el hosting |
 | `DATA_DIR` | Solo sin Supabase: ruta del disco persistente, por ejemplo `/data` |
 
@@ -107,6 +126,7 @@ Antes de publicar:
 2. Llena los datos marcados en amarillo en `public/cambios-y-devoluciones.html` y `public/aviso-de-privacidad.html`.
 3. Revisa los datos de la tienda en `server.js` (`const TIENDA`): WhatsApp, dirección, horario y costos de envío.
 4. En Supabase, el plan gratuito pausa los proyectos sin actividad durante una semana. Para la tienda en producción conviene el plan de pago (incluye respaldos diarios).
+5. Activa la verificación anti-bots del panel con las claves de tu widget de Cloudflare.
 
 ## Pedidos
 

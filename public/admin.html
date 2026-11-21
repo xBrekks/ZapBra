@@ -96,6 +96,8 @@
           <span>Confirmar contraseña</span>
           <input type="password" id="acceso-confirmar" autocomplete="new-password">
         </label>
+        <!-- Verificación anti-bots de Cloudflare: solo aparece si el servidor tiene las claves de Turnstile -->
+        <div class="verificacion" id="acceso-verificacion" hidden></div>
         <p class="error" id="acceso-error" role="alert"></p>
         <button class="btn btn-verde btn-bloque" type="submit" id="acceso-boton">Entrar</button>
       </form>

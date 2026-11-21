@@ -37,6 +37,8 @@
   border-top: 6px solid var(--verde);
 }
 .acceso-tarjeta h1 { font-size: 1.5rem; color: var(--azul); }
+/* Recuadro de Cloudflare: mide 65px de alto; se aparta el espacio para que el botón no brinque al aparecer */
+.verificacion { min-height: 65px; margin: .9rem 0 .2rem; }
 
 /* ---------- Campos de formulario (base en styles.css) ---------- */
 .campo textarea { min-height: 96px; }
@@ -401,4 +403,7 @@ h2 .etiqueta { vertical-align: middle; font-size: .8rem; margin-left: .4rem; }
   .pedido-columnas { grid-template-columns: 1fr; gap: 0; }
   .modal-pedido { padding: 1.1rem; }
   .admin-menu { gap: .9rem; }
+  /* El recuadro de Cloudflare necesita 300px de ancho: cabe en celulares desde 360px */
+  .acceso { padding: 12px; }
+  .acceso-tarjeta { padding: 1.5rem 1rem; }
 }
