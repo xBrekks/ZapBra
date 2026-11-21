@@ -22,6 +22,10 @@ async function iniciarServidor(entorno = {}) {
       SUPABASE_URL: '',
       SUPABASE_SECRET_KEY: '',
       TRUST_PROXY: '',
+      // Sin verificación de Cloudflare, aunque el .env tenga claves (verificacion.test.js la prueba aparte)
+      TURNSTILE_SITE_KEY: '',
+      TURNSTILE_SECRET_KEY: '',
+      TURNSTILE_VERIFY_URL: '',
       ...entorno,
     },
     stdio: ['ignore', 'pipe', 'pipe'],

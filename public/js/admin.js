@@ -113,28 +113,118 @@ function mostrarAcceso(configurado) {
   $('#campo-confirmar').hidden = !modoConfigurar;
   $('#acceso-password').autocomplete = modoConfigurar ? 'new-password' : 'current-password';
   $('#acceso-boton').textContent = modoConfigurar ? 'Crear contraseña y entrar' : 'Entrar';
-  $('#acceso-error').textContent = '';
+  avisoAcceso('');
   mostrar('acceso');
   $('#acceso-password').focus();
+  prepararVerificacion();
+}
+
+// Mensaje bajo el formulario. Los avisos de la verificación se borran solos cuando Cloudflare da el token.
+function avisoAcceso(texto, deVerificacion = false) {
+  $('#acceso-error').textContent = texto;
+  verificacion.aviso = deVerificacion && !!texto;
 }
 
 $('#form-acceso').addEventListener('submit', async (e) => {
   e.preventDefault();
   const password = $('#acceso-password').value;
+  let enviado = false;
   try {
     if (modoConfigurar) {
       if (password.length < 8) throw new Error('La contraseña debe tener al menos 8 caracteres');
       if (password !== $('#acceso-confirmar').value) throw new Error('Las contraseñas no coinciden');
-      await api('/api/configurar', { metodo: 'POST', datos: { password } });
-    } else {
-      await api('/api/login', { metodo: 'POST', datos: { password } });
     }
+    if (verificacion.sitekey && !verificacion.token) {
+      return avisoAcceso('Espera a que termine la verificación de seguridad y vuelve a intentar.', true);
+    }
+    const datos = { password, ...(verificacion.token && { tokenTurnstile: verificacion.token }) };
+    enviado = true;
+    await api(modoConfigurar ? '/api/configurar' : '/api/login', { metodo: 'POST', datos });
     e.target.reset();
     await entrarAlPanel();
+    quitarVerificacion(); // no hace falta mientras la sesión siga abierta
   } catch (err) {
-    $('#acceso-error').textContent = err.message;
+    avisoAcceso(err.message);
+    if (enviado) reiniciarVerificacion(); // cada token sirve para un solo intento: Cloudflare da otro
   }
 });
+
+// ---------- Verificación anti-bots (Cloudflare Turnstile) ----------
+// Solo aparece si el servidor tiene las claves de Turnstile. El script de Cloudflare se carga únicamente
+// en la pantalla de acceso, y el recuadro se quita al entrar al panel.
+const verificacion = { sitekey: '', widget: null, token: '', aviso: false, carga: null };
+
+function cargarTurnstile() {
+  verificacion.carga ??= new Promise((resolve, reject) => {
+    window.alCargarTurnstile = resolve;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=alCargarTurnstile';
+    script.async = true;
+    script.onerror = () => {
+      script.remove();
+      verificacion.carga = null; // se vuelve a intentar la próxima vez que se muestre el acceso
+      reject(new Error('No se pudo cargar la verificación de seguridad de Cloudflare. Revisa tu conexión a internet (o si un bloqueador de anuncios la bloquea) y recarga la página.'));
+    };
+    document.head.append(script);
+  });
+  return verificacion.carga;
+}
+
+// Errores del recuadro que vienen de cómo está dado de alta el widget en Cloudflare (no se arreglan solos).
+const ERRORES_TURNSTILE = {
+  110100: 'la clave del sitio (TURNSTILE_SITE_KEY) no es válida',
+  110110: 'la clave del sitio (TURNSTILE_SITE_KEY) no existe',
+  110200: 'este dominio no está en la lista de dominios del widget en Cloudflare',
+  400020: 'la clave del sitio (TURNSTILE_SITE_KEY) no es válida',
+  400070: 'el widget está desactivado en Cloudflare',
+};
+
+async function prepararVerificacion() {
+  if (!verificacion.sitekey || verificacion.widget !== null) return;
+  const caja = $('#acceso-verificacion');
+  caja.hidden = false;
+  try {
+    await cargarTurnstile();
+  } catch (err) {
+    return avisoAcceso(err.message);
+  }
+  if (verificacion.widget !== null || $('#acceso').hidden) return; // otra llamada ya lo dibujó, o ya se entró
+  verificacion.token = '';
+  verificacion.widget = turnstile.render(caja, {
+    sitekey: verificacion.sitekey,
+    action: 'panel', // el servidor revisa que el token venga de este formulario
+    language: 'es',
+    theme: 'light',
+    size: caja.clientWidth >= 300 ? 'flexible' : 'compact', // flexible: del ancho del formulario
+    callback: (token) => {
+      verificacion.token = token;
+      if (verificacion.aviso) avisoAcceso('');
+    },
+    'expired-callback': () => { verificacion.token = ''; }, // Cloudflare lo renueva solo
+    'timeout-callback': () => { verificacion.token = ''; },
+    'error-callback': (codigo) => {
+      verificacion.token = '';
+      const causa = ERRORES_TURNSTILE[codigo];
+      avisoAcceso(causa
+        ? `La verificación de seguridad no funciona: ${causa} (error ${codigo}).`
+        : `La verificación de seguridad falló (error ${codigo}). Se reintenta sola; si sigue fallando, recarga la página.`, !causa);
+      return true; // ya se avisó en pantalla
+    },
+  });
+}
+
+function reiniciarVerificacion() {
+  verificacion.token = '';
+  if (verificacion.widget !== null) turnstile.reset(verificacion.widget);
+  else prepararVerificacion();
+}
+
+function quitarVerificacion() {
+  if (verificacion.widget !== null) turnstile.remove(verificacion.widget);
+  verificacion.widget = null;
+  verificacion.token = '';
+  $('#acceso-verificacion').hidden = true;
+}
 
 async function entrarAlPanel() {
   await recargarTodo();
@@ -972,6 +1062,7 @@ window.addEventListener('beforeunload', (e) => {
 (async function iniciar() {
   try {
     const sesion = await api('/api/sesion');
+    verificacion.sitekey = sesion.sitekeyTurnstile || '';
     if (!sesion.autenticado) return mostrarAcceso(sesion.configurado);
     await entrarAlPanel();
   } catch {

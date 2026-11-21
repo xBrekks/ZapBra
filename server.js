@@ -8,10 +8,12 @@
  *
  * Variables de entorno (en el archivo .env o en el hosting):
  *   SUPABASE_URL, SUPABASE_SECRET_KEY  Guardan catálogo, contraseña y fotos en Supabase (ver almacen.js)
+ *   TURNSTILE_SITE_KEY, TURNSTILE_SECRET_KEY  Verificación anti-bots de Cloudflare al entrar al panel (opcional)
  *   PORT         Puerto (por defecto 3000)
  *   DATA_DIR     Sin Supabase: carpeta persistente para catálogo, contraseña y fotos (por defecto ./data)
  *   TRUST_PROXY  "1" si el sitio está detrás de un proxy/HTTPS del hosting
  *   ALMACEN      "archivos" ignora Supabase y usa la carpeta de datos (lo usan las pruebas: npm test)
+ *   TURNSTILE_VERIFY_URL  Solo para las pruebas: un Cloudflare falso que corre en la misma computadora
  */
 const http = require('node:http');
 const fs = require('node:fs');
@@ -27,6 +29,18 @@ const PUBLICO = path.join(__dirname, 'public');
 const DATOS_INICIALES = path.join(__dirname, 'data');
 const DATOS = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : DATOS_INICIALES;
 const CONFIAR_PROXY = process.env.TRUST_PROXY === '1';
+
+// Verificación anti-bots de Cloudflare (Turnstile, gratis) al entrar al panel. Sin las dos claves, el panel
+// pide solo la contraseña; quitarlas también sirve para apagarla si algún día Cloudflare fallara.
+const TURNSTILE = process.env.TURNSTILE_SITE_KEY && process.env.TURNSTILE_SECRET_KEY
+  ? {
+      sitekey: process.env.TURNSTILE_SITE_KEY,
+      secreto: process.env.TURNSTILE_SECRET_KEY,
+      url: process.env.TURNSTILE_VERIFY_URL || 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+    }
+  : null;
+const ACCION_PANEL = 'panel'; // el panel la fija al dibujar el recuadro; Cloudflare la devuelve al validar
+const esClaveDePrueba = (clave) => /^[123]x0+[A-F]{2}$/.test(clave); // claves de prueba que publica Cloudflare
 
 const almacen = crearAlmacen({ datos: DATOS, datosIniciales: DATOS_INICIALES });
 const CARPETA_IMAGENES = almacen.carpetaImagenes; // solo sin Supabase; se sirven en /img/productos/
@@ -416,7 +430,49 @@ function registrarFallo(ip) {
   intentos.set(ip, r);
 }
 
+// Pregunta a Cloudflare si el token del recuadro de verificación es bueno (dura 5 minutos y sirve para un
+// solo intento). Devuelve null si la persona pasó, o { estado, mensaje } para responder.
+async function revisarVerificacion(token) {
+  if (!TURNSTILE) return null;
+  const invalida = { estado: 403, mensaje: 'La verificación de seguridad no es válida o ya expiró. Intenta de nuevo.' };
+  if (typeof token !== 'string' || !token) return { estado: 403, mensaje: 'Completa la verificación de seguridad e intenta de nuevo.' };
+  if (token.length > 2048) return invalida; // Cloudflare no da tokens más largos
+  let r = null;
+  try {
+    const res = await fetch(TURNSTILE.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // Sin "remoteip" (es opcional): la IP con que el cliente llega a Cloudflare puede no ser la que ve
+      // este servidor (IPv6 contra IPv4, proxies del hosting) y no queremos rechazar a nadie por eso.
+      body: JSON.stringify({ secret: TURNSTILE.secreto, response: token }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    r = await res.json();
+  } catch (e) {
+    console.error(`No se pudo consultar la verificación de Cloudflare: ${e.message}`);
+  }
+  const codigos = Array.isArray(r?.['error-codes']) ? r['error-codes'] : [];
+  if (!r || codigos.includes('internal-error')) {
+    return { estado: 503, mensaje: 'No se pudo comprobar la verificación de seguridad. Intenta de nuevo en un momento.' };
+  }
+  if (codigos.some((c) => String(c).includes('secret'))) {
+    console.error('Cloudflare rechazó TURNSTILE_SECRET_KEY: revisa que sea la clave secreta del mismo widget que TURNSTILE_SITE_KEY.');
+    return { estado: 503, mensaje: 'La verificación de seguridad está mal configurada en el servidor (TURNSTILE_SECRET_KEY).' };
+  }
+  // Con las claves de prueba de Cloudflare la respuesta no trae acción.
+  return r.success === true && (!r.action || r.action === ACCION_PANEL) ? null : invalida;
+}
+
 // ---------- API ----------
+// La verificación anti-bots va antes que la contraseña. Un token inválido cuenta como intento fallido.
+async function pasaVerificacion(res, ip, token) {
+  const problema = await revisarVerificacion(token);
+  if (!problema) return true;
+  if (problema.estado === 403) registrarFallo(ip);
+  error(res, problema.estado, problema.mensaje);
+  return false;
+}
+
 async function api(req, res, ruta) {
   const metodo = req.method;
   const ip = ipCliente(req);
@@ -437,21 +493,28 @@ async function api(req, res, ruta) {
   }
 
   if (metodo === 'GET' && ruta === '/api/sesion') {
-    return enviarJSON(res, 200, { autenticado: autenticado(req), configurado: !!(await leerAdmin()) });
+    return enviarJSON(res, 200, {
+      autenticado: autenticado(req),
+      configurado: !!(await leerAdmin()),
+      ...(TURNSTILE && { sitekeyTurnstile: TURNSTILE.sitekey }), // la clave pública; la secreta nunca sale de aquí
+    });
   }
 
   // Primer uso: crear la contraseña del administrador (solo si aún no existe).
   if (metodo === 'POST' && ruta === '/api/configurar') {
     if (await leerAdmin()) return error(res, 409, 'La contraseña ya fue configurada');
-    const { password } = await leerCuerpo(req);
+    if (bloqueado(ip)) return error(res, 429, 'Demasiados intentos. Espera 15 minutos.');
+    const { password, tokenTurnstile } = await leerCuerpo(req);
     if (typeof password !== 'string' || password.length < 8) return error(res, 400, 'La contraseña debe tener al menos 8 caracteres');
+    if (!(await pasaVerificacion(res, ip, tokenTurnstile))) return;
     await almacen.crearAdmin(hashPassword(password));
     return enviarJSON(res, 200, { ok: true }, { 'Set-Cookie': crearSesion(req) });
   }
 
   if (metodo === 'POST' && ruta === '/api/login') {
     if (bloqueado(ip)) return error(res, 429, 'Demasiados intentos. Espera 15 minutos.');
-    const { password } = await leerCuerpo(req);
+    const { password, tokenTurnstile } = await leerCuerpo(req);
+    if (!(await pasaVerificacion(res, ip, tokenTurnstile))) return;
     if (!(await passwordCorrecto(password))) {
       registrarFallo(ip);
       return error(res, 401, 'Contraseña incorrecta');
@@ -616,6 +679,8 @@ async function estatico(req, res, ruta) {
       'Content-Type': TIPOS_MIME[path.extname(archivo).toLowerCase()] || 'application/octet-stream',
       'Content-Length': info.size,
       ...SEGURIDAD,
+      // El recuadro de Cloudflare revisa desde qué sitio se abre: el panel le manda solo el origen, nunca la ruta.
+      ...(TURNSTILE && ruta === '/admin.html' && { 'Referrer-Policy': 'strict-origin-when-cross-origin' }),
       // Las fotos tienen nombre único, así que el navegador puede guardarlas mucho tiempo.
       'Cache-Control': base === CARPETA_IMAGENES ? 'public, max-age=31536000, immutable' : 'no-cache',
     });
@@ -775,6 +840,20 @@ const servidor = http.createServer(async (req, res) => {
   }
 });
 
+// Dice al arrancar si el panel pide la verificación de Cloudflare, para detectar claves mal puestas.
+function avisarVerificacion() {
+  if (!TURNSTILE) {
+    if (process.env.TURNSTILE_SITE_KEY || process.env.TURNSTILE_SECRET_KEY) {
+      console.warn('Falta TURNSTILE_SITE_KEY o TURNSTILE_SECRET_KEY: el panel pide solo la contraseña.');
+    }
+    return;
+  }
+  const dePrueba = [TURNSTILE.sitekey, TURNSTILE.secreto].filter(esClaveDePrueba).length;
+  if (dePrueba === 2) console.log('Verificación anti-bots con las claves de PRUEBA de Cloudflare: siempre pasa, no protege el sitio publicado.');
+  else if (dePrueba === 1) console.warn('Verificación anti-bots: mezclaste una clave de prueba con una real, así no vas a poder entrar al panel. Revisa TURNSTILE_SITE_KEY y TURNSTILE_SECRET_KEY.');
+  else console.log('Verificación anti-bots de Cloudflare activa al entrar al panel.');
+}
+
 almacen.preparar()
   .then(async () => {
     await limpiarImagenes(await leerCatalogo());
@@ -782,6 +861,7 @@ almacen.preparar()
       const { port } = servidor.address();
       console.log(`Zapatería Brazil lista en http://localhost:${port} (datos en ${almacen.modo === 'supabase' ? 'Supabase' : DATOS})`);
       console.log(`Panel de administración: http://localhost:${port}/admin`);
+      avisarVerificacion();
     });
   })
   .catch((e) => {
