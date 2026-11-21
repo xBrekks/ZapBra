@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel de administración | Zapatería Brazil</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <header class="admin-barra">
+    <div class="contenedor admin-barra-fila">
+      <a href="/admin" class="marca">
+        <svg class="marca-icono" viewBox="0 0 60 42" aria-hidden="true">
+          <rect width="60" height="42" rx="6" fill="#009C3B"/>
+          <path d="M30 5 L55 21 L30 37 L5 21 Z" fill="#FFDF00"/>
+          <circle cx="30" cy="21" r="9" fill="#002776"/>
+        </svg>
+        <span>Zapatería <strong>Brazil</strong> <small>· Administración</small></span>
+      </a>
+      <nav class="admin-menu" id="admin-menu" hidden>
+        <a href="/" target="_blank" rel="noopener">Ver tienda</a>
+        <button class="enlace" id="btn-password">Contraseña</button>
+        <button class="enlace" id="btn-salir">Salir</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <nav class="contenedor pestanas" id="pestanas" aria-label="Secciones del panel" hidden>
+      <button data-vista="tablero">Tablero</button>
+      <button data-vista="pedidos">Pedidos <span class="contador-pestana" id="contador-pedidos" hidden></span></button>
+      <button data-vista="listado">Productos</button>
+      <button data-vista="categorias">Categorías</button>
+    </nav>
+
+    <!-- Tablero -->
+    <section class="contenedor admin-seccion" id="tablero" hidden>
+      <div class="admin-titulo">
+        <h1>Tablero</h1>
+        <button class="btn btn-claro" id="btn-actualizar-tablero">Actualizar</button>
+      </div>
+      <div id="tablero-contenido"><p class="vacio">Cargando…</p></div>
+    </section>
+
+    <!-- Pedidos -->
+    <section class="contenedor admin-seccion" id="pedidos" hidden>
+      <div class="admin-titulo">
+        <h1>Pedidos</h1>
+        <button class="btn btn-claro" id="btn-actualizar-pedidos">Actualizar</button>
+      </div>
+
+      <div class="resumen" id="resumen-pedidos"></div>
+
+      <div class="herramientas herramientas-pedidos">
+        <input type="search" id="buscar-pedido" placeholder="Buscar por folio, nombre o teléfono…" aria-label="Buscar pedidos">
+        <select id="filtro-estado" aria-label="Filtrar por estado">
+          <option value="">Todos los pedidos</option>
+          <option value="nuevo">Nuevos</option>
+          <option value="confirmado">Confirmados</option>
+          <option value="entregado">Entregados</option>
+          <option value="cancelado">Cancelados</option>
+        </select>
+      </div>
+
+      <div class="tabla-envoltura">
+        <table class="tabla-admin">
+          <thead>
+            <tr>
+              <th>Folio</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Entrega</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th><span class="solo-lectores">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-pedidos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Acceso -->
+    <section class="acceso" id="acceso" hidden>
+      <form class="acceso-tarjeta" id="form-acceso">
+        <h1 id="acceso-titulo">Iniciar sesión</h1>
+        <p class="texto-suave" id="acceso-texto">Ingresa la contraseña del panel.</p>
+        <label class="campo">
+          <span>Contraseña</span>
+          <input type="password" id="acceso-password" autocomplete="current-password" required>
+        </label>
+        <label class="campo" id="campo-confirmar" hidden>
+          <span>Confirmar contraseña</span>
+          <input type="password" id="acceso-confirmar" autocomplete="new-password">
+        </label>
+        <p class="error" id="acceso-error" role="alert"></p>
+        <button class="btn btn-verde btn-bloque" type="submit" id="acceso-boton">Entrar</button>
+      </form>
+    </section>
+
+    <!-- Listado de productos -->
+    <section class="contenedor admin-seccion" id="listado" hidden>
+      <div class="admin-titulo">
+        <h1>Productos</h1>
+        <button class="btn btn-verde" id="btn-nuevo">+ Nuevo producto</button>
+      </div>
+
+      <div class="resumen" id="resumen"></div>
+
+      <div class="herramientas">
+        <input type="search" id="buscar" placeholder="Buscar por nombre, marca o tipo…" aria-label="Buscar productos">
+        <select id="filtro-categoria" aria-label="Filtrar por categoría"></select>
+        <select id="filtro-stock" aria-label="Filtrar por inventario">
+          <option value="">Todo el inventario</option>
+          <option value="bajo">Stock bajo</option>
+          <option value="agotado">Agotados</option>
+        </select>
+      </div>
+
+      <div class="tabla-envoltura">
+        <table class="tabla-admin">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Variantes</th>
+              <th>Inventario</th>
+              <th><span class="solo-lectores">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Editor de producto -->
+    <section class="contenedor admin-seccion" id="editor" hidden></section>
+
+    <!-- Categorías -->
+    <section class="contenedor admin-seccion" id="categorias" hidden>
+      <div class="admin-titulo">
+        <h1>Categorías</h1>
+        <button class="btn btn-verde" id="btn-nueva-categoria">+ Nueva categoría</button>
+      </div>
+      <p class="ayuda">Este es el orden en que aparecen en el menú de la tienda. Usa las flechas para reordenarlas.</p>
+      <div class="lista-categorias" id="lista-categorias"></div>
+    </section>
+  </main>
+
+  <!-- Detalle de pedido -->
+  <dialog class="modal modal-pedido" id="modal-pedido" aria-labelledby="titulo-pedido">
+    <div id="detalle-pedido"></div>
+  </dialog>
+
+  <!-- Crear / editar categoría -->
+  <dialog class="modal modal-chico" id="modal-categoria" aria-labelledby="titulo-categoria">
+    <form id="form-categoria">
+      <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+      <h2 id="titulo-categoria">Nueva categoría</h2>
+      <div class="categoria-vista" id="categoria-vista"></div>
+      <label class="campo"><span>Nombre *</span><input id="cat-nombre" maxlength="40" required placeholder="Ej. Escolar"></label>
+      <label class="campo"><span>Descripción corta</span><input id="cat-desc" maxlength="80" placeholder="Ej. Zapatos y tenis para la escuela"></label>
+      <div class="fila-campos">
+        <label class="campo"><span>Ilustración</span><select id="cat-tipo"></select></label>
+        <label class="campo"><span>Color</span><input type="color" id="cat-hex" value="#009c3b"></label>
+      </div>
+      <p class="error" id="cat-error" role="alert"></p>
+      <button class="btn btn-verde btn-bloque" type="submit" id="cat-guardar">Guardar</button>
+    </form>
+  </dialog>
+
+  <!-- Cambiar contraseña -->
+  <dialog class="modal modal-chico" id="modal-password" aria-labelledby="titulo-password">
+    <form id="form-password">
+      <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+      <h2 id="titulo-password">Cambiar contraseña</h2>
+      <label class="campo"><span>Contraseña actual</span><input type="password" id="pass-actual" autocomplete="current-password" required></label>
+      <label class="campo"><span>Nueva contraseña (mínimo 8 caracteres)</span><input type="password" id="pass-nueva" autocomplete="new-password" minlength="8" required></label>
+      <label class="campo"><span>Confirmar nueva contraseña</span><input type="password" id="pass-confirmar" autocomplete="new-password" required></label>
+      <p class="error" id="pass-error" role="alert"></p>
+      <button class="btn btn-verde btn-bloque" type="submit">Guardar contraseña</button>
+    </form>
+  </dialog>
+
+  <!-- Confirmación -->
+  <dialog class="modal modal-chico" id="modal-confirmar" aria-labelledby="confirmar-titulo">
+    <h2 id="confirmar-titulo">¿Eliminar?</h2>
+    <p id="confirmar-texto"></p>
+    <div class="confirmar-acciones">
+      <button class="btn btn-claro" data-cerrar>Cancelar</button>
+      <button class="btn btn-rojo" id="confirmar-si">Eliminar</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/figuras.js"></script>
+  <script src="js/tablero-calculos.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/tablero.js"></script>
+</body>
+</html>

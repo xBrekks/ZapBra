@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zapatería Brazil | Calzado en Temixco, Morelos</title>
+  <meta name="description" content="Zapatería Brazil: tenis, botas, zapato formal, sandalias y productos para el cuidado del calzado. Tienda en Temixco, Morelos, con envíos a todo México.">
+  <!--META-->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="aviso">Envío gratis desde $999 · Recoge gratis en nuestra tienda de Temixco</div>
+
+  <header class="encabezado">
+    <div class="contenedor encabezado-fila">
+      <a href="/" class="marca" data-categoria="todos" aria-label="Zapatería Brazil, inicio">
+        <svg class="marca-icono" viewBox="0 0 60 42" aria-hidden="true">
+          <rect width="60" height="42" rx="6" fill="#009C3B"/>
+          <path d="M30 5 L55 21 L30 37 L5 21 Z" fill="#FFDF00"/>
+          <circle cx="30" cy="21" r="9" fill="#002776"/>
+        </svg>
+        <span>Zapatería <strong>Brazil</strong></span>
+      </a>
+
+      <form class="buscador" role="search" id="form-busqueda">
+        <input type="search" id="busqueda" placeholder="Buscar tenis, botas, crema…" aria-label="Buscar productos">
+      </form>
+
+      <button class="btn-carrito" id="abrir-carrito" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.5" fill="currentColor"/><circle cx="17" cy="20" r="1.5" fill="currentColor"/></svg>
+        <span class="contador" id="contador-carrito" hidden>0</span>
+      </button>
+    </div>
+
+    <nav class="nav-categorias" aria-label="Categorías">
+      <div class="contenedor" id="nav-categorias"></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero solo-catalogo" id="hero">
+      <div class="contenedor hero-contenido">
+        <div>
+          <p class="hero-etiqueta">Calzado para toda la familia</p>
+          <h1>Pisa firme, desde Morelos para todo México</h1>
+          <p>Tenis, botas, zapato formal y todo para mantenerlos como nuevos.</p>
+          <div class="hero-botones">
+            <a href="#catalogo" class="btn btn-amarillo">Ver catálogo</a>
+            <button class="btn btn-contorno" data-categoria="cuidado">Cuida tus zapatos</button>
+          </div>
+        </div>
+        <div class="hero-figura" id="hero-figura" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="beneficios contenedor solo-catalogo" aria-label="Beneficios">
+      <div><strong>Envío gratis</strong><span>desde $999 MXN</span></div>
+      <div><strong>Recoge en tienda</strong><span>Gratis en Temixco, Centro</span></div>
+      <div><strong>Cambios de talla</strong><span>30 días sin costo</span></div>
+      <div><strong>Atención directa</strong><span>Por WhatsApp</span></div>
+    </section>
+
+    <section class="contenedor seccion solo-catalogo" id="seccion-categorias">
+      <h2>Compra por categoría</h2>
+      <div class="grid-categorias" id="grid-categorias"></div>
+    </section>
+
+    <section class="contenedor seccion solo-catalogo" id="catalogo">
+      <div class="catalogo-encabezado">
+        <div>
+          <h2 id="titulo-catalogo">Todos los productos</h2>
+          <p class="texto-suave" id="conteo-resultados"></p>
+        </div>
+        <div class="catalogo-controles">
+          <button class="btn btn-claro btn-filtros" id="btn-filtros" aria-expanded="false" aria-controls="filtros">Filtros</button>
+          <label class="orden">
+            <span>Ordenar</span>
+            <select id="orden">
+              <option value="relevancia">Destacados</option>
+              <option value="precio-asc">Precio: menor a mayor</option>
+              <option value="precio-desc">Precio: mayor a menor</option>
+              <option value="nombre">Nombre A–Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="catalogo">
+        <aside class="filtros" id="filtros" aria-label="Filtros"></aside>
+        <div class="grid-productos" id="grid-productos"></div>
+      </div>
+    </section>
+
+    <!-- Página de un producto (/producto/<id>) -->
+    <section class="contenedor seccion solo-producto" id="vista-producto">
+      <div id="detalle-producto"><p class="vacio">Cargando producto…</p></div>
+    </section>
+
+    <!-- Tienda física -->
+    <section class="contenedor seccion solo-catalogo" id="visitanos">
+      <h2>Visítanos en Temixco</h2>
+      <div class="visitanos">
+        <div class="visitanos-info">
+          <p class="visitanos-dato"><strong>Dirección</strong>Calle Emiliano Zapata 29, Centro<br>62580 Temixco, Morelos</p>
+          <p class="visitanos-dato"><strong>Horario</strong>Lunes a domingo, 10:00 a 19:00</p>
+          <p class="visitanos-dato"><strong>Teléfono y WhatsApp</strong><a href="tel:+527771091249">777 109 1249</a></p>
+          <p class="texto-suave">Pide en línea y recoge gratis en tienda: te avisamos por WhatsApp cuando tu pedido esté listo.</p>
+          <div class="visitanos-botones">
+            <a class="btn btn-verde" href="https://www.google.com/maps/dir/?api=1&amp;destination=Calle+Emiliano+Zapata+29,+Centro,+62580+Temixco,+Mor." target="_blank" rel="noopener">Cómo llegar</a>
+            <a class="btn btn-claro" href="https://wa.me/527771091249" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+          </div>
+        </div>
+        <iframe class="visitanos-mapa" title="Mapa: Zapatería Brazil en Temixco" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Calle+Emiliano+Zapata+29,+Centro,+62580+Temixco,+Mor.&amp;output=embed"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie-grid">
+      <div>
+        <p class="pie-marca">Zapatería <strong>Brazil</strong></p>
+        <p>Calzado y cuidado del calzado.<br>Calle Emiliano Zapata 29, Centro<br>62580 Temixco, Morelos.</p>
+      </div>
+      <div>
+        <h3>Ayuda</h3>
+        <button class="enlace" data-guia>Guía de tallas</button>
+        <a class="enlace" href="/cambios-y-devoluciones">Cambios y devoluciones</a>
+        <a class="enlace" href="/aviso-de-privacidad">Aviso de privacidad</a>
+      </div>
+      <div>
+        <h3>Contacto</h3>
+        <p>WhatsApp: <a href="https://wa.me/527771091249" target="_blank" rel="noopener">777 109 1249</a></p>
+        <p>Teléfono: <a href="tel:+527771091249">777 109 1249</a></p>
+        <p>Lunes a domingo, 10:00 a 19:00</p>
+      </div>
+    </div>
+    <div class="pie-franja" aria-hidden="true"></div>
+  </footer>
+
+  <!-- Guía de tallas -->
+  <dialog class="modal modal-chico" id="modal-guia" aria-labelledby="titulo-guia">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <h2 id="titulo-guia">Guía de tallas</h2>
+    <p class="texto-suave">Mide tu pie del talón a la punta del dedo más largo. La talla mexicana equivale a esa medida en centímetros.</p>
+    <h3>Mujer</h3>
+    <table class="tabla">
+      <thead><tr><th>MX</th><th>US</th><th>EU</th><th>cm</th></tr></thead>
+      <tbody>
+        <tr><td>22</td><td>5</td><td>35</td><td>22</td></tr>
+        <tr><td>23</td><td>6</td><td>36</td><td>23</td></tr>
+        <tr><td>24</td><td>7</td><td>37.5</td><td>24</td></tr>
+        <tr><td>25</td><td>8</td><td>38.5</td><td>25</td></tr>
+        <tr><td>26</td><td>9</td><td>40</td><td>26</td></tr>
+      </tbody>
+    </table>
+    <h3>Hombre</h3>
+    <table class="tabla">
+      <thead><tr><th>MX</th><th>US</th><th>EU</th><th>cm</th></tr></thead>
+      <tbody>
+        <tr><td>25</td><td>7</td><td>40</td><td>25</td></tr>
+        <tr><td>26</td><td>8</td><td>41</td><td>26</td></tr>
+        <tr><td>27</td><td>9</td><td>42</td><td>27</td></tr>
+        <tr><td>28</td><td>10</td><td>43</td><td>28</td></tr>
+        <tr><td>29</td><td>11</td><td>44</td><td>29</td></tr>
+        <tr><td>30</td><td>12</td><td>45</td><td>30</td></tr>
+      </tbody>
+    </table>
+    <p class="texto-suave">Niños: la talla MX también es la medida del pie en cm (15 a 21). Si estás entre dos tallas, elige la mayor.</p>
+  </dialog>
+
+  <!-- Carrito -->
+  <div class="capa" id="capa-carrito" hidden></div>
+  <aside class="carrito" id="carrito" aria-label="Carrito de compras" aria-hidden="true">
+    <div class="carrito-encabezado">
+      <h2 id="carrito-titulo">Tu carrito</h2>
+      <button class="cerrar" id="cerrar-carrito" aria-label="Cerrar carrito">&times;</button>
+    </div>
+    <div class="carrito-items" id="carrito-items"></div>
+    <div class="carrito-pie" id="carrito-pie"></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/figuras.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Claves de Supabase y contraseña del panel (nunca subir al repositorio)
+.env
+api.txt
+data/admin.json
+
+# Pedidos (datos personales de clientes) cuando no se usa Supabase
+data/pedidos.json
+data/pedidos.json.tmp
+
+# Archivos temporales del catálogo y fotos subidas desde el panel
+data/*.tmp
+data/catalogo.respaldo.json
+data/imagenes/
+
+node_modules/
+
+# Archivos del sistema y registros
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log

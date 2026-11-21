@@ -1,0 +1,830 @@
+{
+  "categorias": [
+    {
+      "id": "hombre",
+      "nombre": "Hombre",
+      "desc": "Tenis, botas y zapato formal",
+      "tipo": "oxford",
+      "hex": "#5a3825"
+    },
+    {
+      "id": "mujer",
+      "nombre": "Mujer",
+      "desc": "Zapatillas, sandalias y botines",
+      "tipo": "tacon",
+      "hex": "#b91c1c"
+    },
+    {
+      "id": "ninos",
+      "nombre": "Niños",
+      "desc": "Escolar y tenis resistentes",
+      "tipo": "tenis",
+      "hex": "#2563eb"
+    },
+    {
+      "id": "cuidado",
+      "nombre": "Cuidado del calzado",
+      "desc": "Limpiadores, cremas y cepillos",
+      "tipo": "kit",
+      "hex": "#009C3B"
+    },
+    {
+      "id": "accesorios",
+      "nombre": "Accesorios",
+      "desc": "Plantillas, agujetas y calcetines",
+      "tipo": "calcetin",
+      "hex": "#002776"
+    }
+  ],
+  "productos": [
+    {
+      "id": "tenis-runner-pro",
+      "nombre": "Tenis Runner Pro",
+      "marca": "Brazil Sport",
+      "categoria": "hombre",
+      "sub": "Deportivo",
+      "tipo": "tenis",
+      "precio": 1299,
+      "precioOferta": 1099,
+      "material": "Malla transpirable, suela de hule",
+      "calce": "Normal",
+      "descripcion": "Tenis ligero para correr o entrenar, con amortiguación en talón y malla que mantiene el pie fresco.",
+      "tallas": [
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#1f2937",
+          "stock": {
+            "25": 3,
+            "26": 5,
+            "27": 6,
+            "28": 4,
+            "29": 2,
+            "30": 1
+          }
+        },
+        {
+          "nombre": "Blanco",
+          "hex": "#f3f4f6",
+          "stock": {
+            "25": 0,
+            "26": 2,
+            "27": 4,
+            "28": 3,
+            "29": 1,
+            "30": 0
+          }
+        },
+        {
+          "nombre": "Azul marino",
+          "hex": "#1e3a8a",
+          "stock": {
+            "25": 2,
+            "26": 0,
+            "27": 3,
+            "28": 3,
+            "29": 2,
+            "30": 2
+          }
+        }
+      ],
+      "relacionados": [
+        "limpiador-espuma",
+        "plantillas-gel",
+        "calcetines-sport"
+      ]
+    },
+    {
+      "id": "bota-industrial",
+      "nombre": "Bota Industrial Morelos",
+      "marca": "Taller Morelos",
+      "categoria": "hombre",
+      "sub": "Botas",
+      "tipo": "bota",
+      "precio": 1599,
+      "material": "Piel genuina, casquillo de acero",
+      "calce": "Pide media talla más",
+      "descripcion": "Bota de trabajo con casquillo, suela antiderrapante y costura reforzada. Hecha para durar.",
+      "tallas": [
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Café",
+          "hex": "#7c4a2d",
+          "stock": {
+            "25": 2,
+            "26": 3,
+            "27": 4,
+            "28": 4,
+            "29": 2,
+            "30": 1
+          }
+        },
+        {
+          "nombre": "Negro",
+          "hex": "#1f2937",
+          "stock": {
+            "25": 1,
+            "26": 2,
+            "27": 2,
+            "28": 0,
+            "29": 1,
+            "30": 1
+          }
+        }
+      ],
+      "relacionados": [
+        "crema-nutritiva",
+        "impermeabilizante",
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "oxford-clasico",
+      "nombre": "Zapato Oxford Clásico",
+      "marca": "Brazil Clásico",
+      "categoria": "hombre",
+      "sub": "Formal",
+      "tipo": "oxford",
+      "precio": 1149,
+      "material": "Piel de becerro, forro de piel",
+      "calce": "Normal",
+      "descripcion": "El zapato formal de siempre: agujeta, punta redonda y suela de cuero. Ideal para oficina y eventos.",
+      "tallas": [
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#111827",
+          "stock": {
+            "25": 2,
+            "26": 4,
+            "27": 5,
+            "28": 3,
+            "29": 2,
+            "30": 1
+          }
+        },
+        {
+          "nombre": "Café",
+          "hex": "#6b3e26",
+          "stock": {
+            "25": 1,
+            "26": 2,
+            "27": 3,
+            "28": 2,
+            "29": 0,
+            "30": 0
+          }
+        }
+      ],
+      "relacionados": [
+        "crema-nutritiva",
+        "cepillo-cerda",
+        "agujetas-redondas"
+      ]
+    },
+    {
+      "id": "mocasin-cuernavaca",
+      "nombre": "Mocasín Casual Cuernavaca",
+      "marca": "Taller Morelos",
+      "categoria": "hombre",
+      "sub": "Casual",
+      "tipo": "mocasin",
+      "precio": 899,
+      "nuevo": true,
+      "material": "Gamuza, suela flexible",
+      "calce": "Normal",
+      "descripcion": "Mocasín sin agujeta, cómodo para todo el día. Costura a mano en el empeine.",
+      "tallas": [
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Miel",
+          "hex": "#c27c3a",
+          "stock": {
+            "25": 1,
+            "26": 3,
+            "27": 3,
+            "28": 2,
+            "29": 1,
+            "30": 0
+          }
+        },
+        {
+          "nombre": "Café oscuro",
+          "hex": "#4a2c1d",
+          "stock": {
+            "25": 0,
+            "26": 2,
+            "27": 2,
+            "28": 2,
+            "29": 1,
+            "30": 1
+          }
+        }
+      ],
+      "relacionados": [
+        "impermeabilizante",
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "tenis-urban-flow",
+      "nombre": "Tenis Urban Flow",
+      "marca": "Brazil Sport",
+      "categoria": "mujer",
+      "sub": "Casual",
+      "tipo": "tenis",
+      "precio": 999,
+      "nuevo": true,
+      "material": "Piel sintética, plantilla acolchada",
+      "calce": "Normal",
+      "descripcion": "Tenis urbano de plataforma ligera que combina con todo. Plantilla acolchada removible.",
+      "tallas": [
+        "22",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Blanco",
+          "hex": "#f3f4f6",
+          "stock": {
+            "22": 3,
+            "23": 5,
+            "24": 4,
+            "25": 3,
+            "26": 1
+          }
+        },
+        {
+          "nombre": "Rosa",
+          "hex": "#f9a8d4",
+          "stock": {
+            "22": 2,
+            "23": 2,
+            "24": 3,
+            "25": 0,
+            "26": 0
+          }
+        },
+        {
+          "nombre": "Verde",
+          "hex": "#009C3B",
+          "stock": {
+            "22": 1,
+            "23": 2,
+            "24": 2,
+            "25": 1,
+            "26": 1
+          }
+        }
+      ],
+      "relacionados": [
+        "limpiador-espuma",
+        "kit-limpieza"
+      ]
+    },
+    {
+      "id": "zapatilla-elegance",
+      "nombre": "Zapatilla Elegance",
+      "marca": "Brazil Clásico",
+      "categoria": "mujer",
+      "sub": "Formal",
+      "tipo": "tacon",
+      "precio": 1049,
+      "material": "Charol, tacón de 8 cm",
+      "calce": "Ajustado: pide media talla más",
+      "descripcion": "Zapatilla de tacón para eventos y oficina, con plantilla acojinada en la zona del metatarso.",
+      "tallas": [
+        "22",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#111827",
+          "stock": {
+            "22": 2,
+            "23": 4,
+            "24": 4,
+            "25": 2,
+            "26": 1
+          }
+        },
+        {
+          "nombre": "Nude",
+          "hex": "#e8c4a0",
+          "stock": {
+            "22": 1,
+            "23": 3,
+            "24": 2,
+            "25": 2,
+            "26": 0
+          }
+        },
+        {
+          "nombre": "Rojo",
+          "hex": "#b91c1c",
+          "stock": {
+            "22": 0,
+            "23": 1,
+            "24": 2,
+            "25": 1,
+            "26": 0
+          }
+        }
+      ],
+      "relacionados": [
+        "plantillas-gel",
+        "crema-nutritiva"
+      ]
+    },
+    {
+      "id": "sandalia-tepoz",
+      "nombre": "Sandalia Tepoz",
+      "marca": "Taller Morelos",
+      "categoria": "mujer",
+      "sub": "Sandalias",
+      "tipo": "sandalia",
+      "precio": 549,
+      "precioOferta": 449,
+      "material": "Piel trenzada, suela de hule",
+      "calce": "Normal",
+      "descripcion": "Sandalia artesanal de piel trenzada, fresca y resistente para el calor de Morelos.",
+      "tallas": [
+        "22",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Café",
+          "hex": "#8b5a2b",
+          "stock": {
+            "22": 3,
+            "23": 4,
+            "24": 4,
+            "25": 3,
+            "26": 2
+          }
+        },
+        {
+          "nombre": "Dorado",
+          "hex": "#d4a72c",
+          "stock": {
+            "22": 1,
+            "23": 2,
+            "24": 2,
+            "25": 1,
+            "26": 0
+          }
+        },
+        {
+          "nombre": "Blanco",
+          "hex": "#f3f4f6",
+          "stock": {
+            "22": 2,
+            "23": 2,
+            "24": 1,
+            "25": 0,
+            "26": 0
+          }
+        }
+      ],
+      "relacionados": [
+        "crema-nutritiva"
+      ]
+    },
+    {
+      "id": "botin-otono",
+      "nombre": "Botín Otoño",
+      "marca": "Brazil Clásico",
+      "categoria": "mujer",
+      "sub": "Botas",
+      "tipo": "botin",
+      "precio": 1399,
+      "material": "Piel, cierre lateral",
+      "calce": "Normal",
+      "descripcion": "Botín al tobillo con tacón bajo y cierre lateral. Cómodo y fácil de combinar.",
+      "tallas": [
+        "22",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#1f2937",
+          "stock": {
+            "22": 1,
+            "23": 3,
+            "24": 3,
+            "25": 2,
+            "26": 1
+          }
+        },
+        {
+          "nombre": "Camel",
+          "hex": "#b5835a",
+          "stock": {
+            "22": 0,
+            "23": 2,
+            "24": 1,
+            "25": 1,
+            "26": 0
+          }
+        }
+      ],
+      "relacionados": [
+        "impermeabilizante",
+        "crema-nutritiva",
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "escolar-durable",
+      "nombre": "Zapato Escolar Durable",
+      "marca": "Brazil Clásico",
+      "categoria": "ninos",
+      "sub": "Escolar",
+      "tipo": "oxford",
+      "precio": 649,
+      "material": "Piel, puntera reforzada",
+      "calce": "Normal",
+      "descripcion": "Zapato escolar con puntera reforzada y suela antiderrapante. Aguanta el recreo.",
+      "tallas": [
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#111827",
+          "stock": {
+            "15": 3,
+            "16": 4,
+            "17": 5,
+            "18": 5,
+            "19": 4,
+            "20": 3,
+            "21": 2
+          }
+        }
+      ],
+      "relacionados": [
+        "crema-nutritiva",
+        "kit-limpieza"
+      ]
+    },
+    {
+      "id": "tenis-saltarin",
+      "nombre": "Tenis Kids Saltarín",
+      "marca": "Brazil Sport",
+      "categoria": "ninos",
+      "sub": "Deportivo",
+      "tipo": "tenis",
+      "precio": 599,
+      "precioOferta": 499,
+      "material": "Lona, cierre de velcro",
+      "calce": "Normal",
+      "descripcion": "Tenis con velcro para que se los pongan solos. Lavables y muy ligeros.",
+      "tallas": [
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Azul",
+          "hex": "#2563eb",
+          "stock": {
+            "15": 2,
+            "16": 3,
+            "17": 3,
+            "18": 4,
+            "19": 2,
+            "20": 1,
+            "21": 1
+          }
+        },
+        {
+          "nombre": "Rosa",
+          "hex": "#f472b6",
+          "stock": {
+            "15": 1,
+            "16": 2,
+            "17": 3,
+            "18": 2,
+            "19": 2,
+            "20": 0,
+            "21": 0
+          }
+        },
+        {
+          "nombre": "Verde",
+          "hex": "#16a34a",
+          "stock": {
+            "15": 0,
+            "16": 1,
+            "17": 2,
+            "18": 2,
+            "19": 1,
+            "20": 1,
+            "21": 0
+          }
+        }
+      ],
+      "relacionados": [
+        "limpiador-espuma",
+        "calcetines-sport"
+      ]
+    },
+    {
+      "id": "kit-limpieza",
+      "nombre": "Kit de Limpieza Premium",
+      "marca": "Brazil Care",
+      "categoria": "cuidado",
+      "sub": "Kits",
+      "tipo": "kit",
+      "precio": 399,
+      "nuevo": true,
+      "material": "Limpiador 150 ml, cepillo y paño de microfibra",
+      "descripcion": "Todo lo que necesitas para dejar tus tenis y zapatos como nuevos, en un solo estuche.",
+      "etiquetaVariante": "Presentación",
+      "variantes": [
+        {
+          "nombre": "Estuche completo",
+          "hex": "#009C3B",
+          "stock": 12
+        }
+      ],
+      "relacionados": [
+        "impermeabilizante",
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "limpiador-espuma",
+      "nombre": "Limpiador en Espuma para Tenis",
+      "marca": "Brazil Care",
+      "categoria": "cuidado",
+      "sub": "Limpiadores",
+      "tipo": "frasco",
+      "precio": 189,
+      "material": "Fórmula biodegradable",
+      "descripcion": "Limpia tela, malla, piel y gamuza sin dañar el color. Incluye aplicador con cepillo.",
+      "etiquetaVariante": "Presentación",
+      "variantes": [
+        {
+          "nombre": "150 ml",
+          "hex": "#FFDF00",
+          "precio": 189,
+          "stock": 20
+        },
+        {
+          "nombre": "300 ml",
+          "hex": "#FFDF00",
+          "precio": 299,
+          "stock": 8
+        }
+      ],
+      "relacionados": [
+        "kit-limpieza",
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "crema-nutritiva",
+      "nombre": "Crema Nutritiva para Piel",
+      "marca": "Brazil Care",
+      "categoria": "cuidado",
+      "sub": "Cremas y betunes",
+      "tipo": "frasco",
+      "precio": 129,
+      "material": "Cera natural y aceites",
+      "descripcion": "Nutre, da brillo y cubre raspones en calzado de piel lisa. Lata de 60 g.",
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Neutro",
+          "hex": "#e5e7eb",
+          "stock": 15
+        },
+        {
+          "nombre": "Negro",
+          "hex": "#111827",
+          "stock": 18
+        },
+        {
+          "nombre": "Café",
+          "hex": "#6b3e26",
+          "stock": 10
+        }
+      ],
+      "relacionados": [
+        "cepillo-cerda"
+      ]
+    },
+    {
+      "id": "impermeabilizante",
+      "nombre": "Impermeabilizante en Spray",
+      "marca": "Brazil Care",
+      "categoria": "cuidado",
+      "sub": "Impermeabilizantes",
+      "tipo": "spray",
+      "precio": 249,
+      "precioOferta": 209,
+      "material": "Spray 200 ml",
+      "descripcion": "Protege contra agua, lodo y manchas. Ideal para la temporada de lluvias.",
+      "etiquetaVariante": "Presentación",
+      "variantes": [
+        {
+          "nombre": "200 ml",
+          "hex": "#002776",
+          "stock": 14
+        }
+      ],
+      "relacionados": [
+        "kit-limpieza"
+      ]
+    },
+    {
+      "id": "cepillo-cerda",
+      "nombre": "Cepillo de Cerda Natural",
+      "marca": "Brazil Care",
+      "categoria": "cuidado",
+      "sub": "Cepillos",
+      "tipo": "cepillo",
+      "precio": 119,
+      "material": "Madera y cerda de caballo",
+      "descripcion": "Cepillo suave para sacar brillo y quitar polvo sin rayar la piel.",
+      "etiquetaVariante": "Presentación",
+      "variantes": [
+        {
+          "nombre": "Mediano",
+          "hex": "#a16207",
+          "stock": 9
+        }
+      ],
+      "relacionados": [
+        "crema-nutritiva"
+      ]
+    },
+    {
+      "id": "plantillas-gel",
+      "nombre": "Plantillas de Gel Confort",
+      "marca": "Brazil Care",
+      "categoria": "accesorios",
+      "sub": "Plantillas",
+      "tipo": "plantilla",
+      "precio": 229,
+      "material": "Gel y espuma recortable",
+      "descripcion": "Absorben el impacto en talón y planta. Se recortan para ajustarse a tu zapato.",
+      "tallas": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Azul",
+          "hex": "#60a5fa",
+          "stock": {
+            "CH": 6,
+            "M": 10,
+            "G": 7
+          }
+        }
+      ],
+      "relacionados": [
+        "calcetines-sport"
+      ]
+    },
+    {
+      "id": "agujetas-redondas",
+      "nombre": "Agujetas Redondas 120 cm",
+      "marca": "Brazil Care",
+      "categoria": "accesorios",
+      "sub": "Agujetas",
+      "tipo": "agujetas",
+      "precio": 59,
+      "material": "Algodón encerado",
+      "descripcion": "Par de agujetas enceradas para zapato formal o botín.",
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Negro",
+          "hex": "#111827",
+          "stock": 30
+        },
+        {
+          "nombre": "Café",
+          "hex": "#6b3e26",
+          "stock": 22
+        },
+        {
+          "nombre": "Blanco",
+          "hex": "#e5e7eb",
+          "stock": 0
+        }
+      ],
+      "relacionados": []
+    },
+    {
+      "id": "calcetines-sport",
+      "nombre": "Calcetines Deportivos (paquete de 3)",
+      "marca": "Brazil Sport",
+      "categoria": "accesorios",
+      "sub": "Calcetines",
+      "tipo": "calcetin",
+      "precio": 179,
+      "material": "Algodón con refuerzo en talón",
+      "descripcion": "Tres pares de calcetines tobilleros con zona acolchada y tejido transpirable.",
+      "tallas": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "etiquetaVariante": "Color",
+      "variantes": [
+        {
+          "nombre": "Blanco",
+          "hex": "#f3f4f6",
+          "stock": {
+            "CH": 8,
+            "M": 12,
+            "G": 6
+          }
+        },
+        {
+          "nombre": "Negro",
+          "hex": "#1f2937",
+          "stock": {
+            "CH": 5,
+            "M": 9,
+            "G": 4
+          }
+        }
+      ],
+      "relacionados": [
+        "plantillas-gel"
+      ]
+    }
+  ]
+}
